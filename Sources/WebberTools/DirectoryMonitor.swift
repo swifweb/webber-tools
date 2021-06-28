@@ -97,23 +97,6 @@ public class DirectoryMonitor {
                     }
                 }
             case .dir:
-                guard !self.childChanged else {
-                    self.childChanged = false
-                    return
-                }
-//                switch data {
-//                case .all: print("all")
-//                case .attrib: print("attrib")
-//                case .delete: print("delete")
-//                case .extend: print("extend")
-//                case .funlock: print("unlock:")
-//                case .link: print("ink:")
-//                case .rename: print("ename:")
-//                case .revoke: print("revoke")
-//                case .write: print("write")
-//                default:
-//                    print("unknown")
-//                }
                 self.parent?.childChanged = true
                 self.lastChangedDate = Date()
                 if let urls = try? FileManager.default.contentsOfDirectory(atPath: self.url.path).map({ self.url.appendingPathComponent($0) }) {
