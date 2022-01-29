@@ -32,24 +32,27 @@ public struct SwiftPackage: Decodable {
     }
     public let targets: [Target]?
     public struct Dependency: Decodable {
-        public let name: String
+        public let identity: String
         public let local: Bool
         public let url: String?
         
         private enum CodingKeys : String, CodingKey {
-            case name, requirement, url
+            case identity, requirement, location
         }
         
         public init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
-            name = try container.decode(String.self, forKey: .name)
+            identity = try container.decode(String.self, forKey: .identity)
             if let requirement = try? container.decode([String: String?].self, forKey: .requirement) {
                 local = requirement.keys.contains("localPackage") == true
             } else {
                 local = false
             }
-            url = try container.decode(String.self, forKey: .url)
+            url = try container.decode(String.self, forKey: .location)
         }
     }
-    public let dependencies: [Dependency]?
+    public struct NewDependency: Decodable {
+        public let scm: [Dependency]?
+    }
+    public let dependencies: [NewDependency]?
 }

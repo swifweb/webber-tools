@@ -28,7 +28,7 @@ public class Swift {
             case .build(let r, let p):
                 var args: [String] = ["build", "-c", r ? "release" : "debug", "--product", p, "--enable-test-discovery"]
                 if tripleWasm {
-                    args.append(contentsOf: ["--triple", "wasm32-unknown-wasi"])
+                    args.append(contentsOf: ["--triple", "wasm32-unknown-wasi", "-Xlinker", "-licuuc", "-Xlinker", "-licui18n", "-Xlinker", "--stack-first"])
                     return args
                 } else {
                     args.append(contentsOf: ["--build-path", "./.build/.native"])
@@ -216,6 +216,7 @@ public class Swift {
         }
         let package = try JSONDecoder().decode(SwiftPackage.self, from: data)
         return package.dependencies?
+            .flatMap { $0.scm ?? [] }
             .filter { $0.local }
             .compactMap { $0.url }
             .filter { !$0.hasPrefix("../") && !$0.hasPrefix("./") }
