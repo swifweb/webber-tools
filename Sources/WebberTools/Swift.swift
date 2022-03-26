@@ -110,9 +110,15 @@ public class Swift {
         let stdout = Pipe()
         let stderr = Pipe()
         
+        var env: [String: String] = [:]
+        for (key, value) in ProcessInfo.processInfo.environment {
+            env[key] = value
+        }
+        env["WEBBER"] = "TRUE"
+        
         process.currentDirectoryPath = workingDirectory
         process.launchPath = launchPath
-        process.environment = ["WEBBER":"TRUE"]
+        process.environment = env
         process.arguments = command.arguments(tripleWasm: tripleWasm)
         process.standardOutput = stdout
         process.standardError = stderr
