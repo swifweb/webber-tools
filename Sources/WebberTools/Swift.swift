@@ -112,6 +112,7 @@ public class Swift {
         
         process.currentDirectoryPath = workingDirectory
         process.launchPath = launchPath
+        process.environment = ["WEBBER":"TRUE"]
         process.arguments = command.arguments(tripleWasm: tripleWasm)
         process.standardOutput = stdout
         process.standardError = stderr
