@@ -51,7 +51,8 @@ public class DirectoryMonitor {
     
     @discardableResult
     func startMonitoring(_ closure: @escaping (URL) -> Void) -> Self {
-        guard dispatchSource == nil && fileDescriptor == -1 else { return self }
+		#if os(macOS)
+		guard dispatchSource == nil && fileDescriptor == -1 else { return self }
         func scanSubfolders() -> [String] {
             guard let content = try? FileManager.default.contentsOfDirectory(atPath: url.path) else { return [] }
             return content.filter {
@@ -136,6 +137,8 @@ public class DirectoryMonitor {
             self.submonitors.forEach { $0.value.stopMonitoring() }
         }
         dispatchSource?.resume()
+		#endif
+		// TODO: support Linux
 
         return self
     }
