@@ -28,7 +28,7 @@ public class Swift {
             case .build(let r, let p):
                 var args: [String] = ["build", "-c", r ? "release" : "debug", "--product", p, "--enable-test-discovery"]
                 if tripleWasm {
-                    args.append(contentsOf: ["--triple", "wasm32-unknown-wasi", "-Xlinker", "-licuuc", "-Xlinker", "-licui18n", "-Xlinker", "--stack-first"])
+                    args.append(contentsOf: ["--triple", "wasm32-unknown-wasi", "-Xlinker", "-licuuc", "-Xlinker", "-licui18n", "-Xlinker", "--stack-first", "--build-path", "./.build/.wasi"])
                     return args
                 } else {
                     args.append(contentsOf: ["--build-path", "./.build/.native"])
@@ -116,6 +116,8 @@ public class Swift {
         }
         env["WEBBER"] = "TRUE"
         
+		print("\(launchPath) \(command.arguments(tripleWasm: tripleWasm).joined(separator: " "))")
+		
         process.currentDirectoryPath = workingDirectory
         process.launchPath = launchPath
         process.environment = env

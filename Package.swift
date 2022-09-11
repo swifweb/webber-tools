@@ -10,9 +10,13 @@ let package = Package(
     products: [
         .library(name: "WebberTools", targets: ["WebberTools"]),
     ],
-    dependencies: [],
+    dependencies: [
+		.package(url: "https://github.com/apple/swift-crypto.git", "1.0.0" ..< "3.0.0"),
+	],
     targets: [
-        .target(name: "WebberTools", dependencies: []),
+        .target(name: "WebberTools", dependencies: [
+			.product(name: "Crypto", package: "swift-crypto")
+		]),
         .testTarget(name: "WebberToolsTests", dependencies: ["WebberTools"]),
     ]
 )
