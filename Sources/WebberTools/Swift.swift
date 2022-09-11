@@ -68,26 +68,8 @@ public class Swift {
         try execute(.version, process: Process())
     }
     
-    public func buildAsync(
-        _ productName: String,
-        release: Bool = false,
-        tripleWasm: Bool = true,
-        handler: @escaping (Result<String, Error>) -> Void
-    ) -> Process {
-        let process = Process()
-        DispatchQueue.global(qos: .userInteractive).async {
-            do {
-                let result = try self.execute(.build(release: release, productName: productName), process: process, tripleWasm: tripleWasm)
-                handler(.success(result))
-            } catch {
-                handler(.failure(error))
-            }
-        }
-        return process
-    }
-    
     @discardableResult
-    public func build(_ productName: String, release: Bool = false, tripleWasm: Bool) throws -> String {
+    public func build(_ productName: String, release: Bool = false, tripleWasm: Bool = true) throws -> String {
         try execute(.build(release: release, productName: productName), process: Process(), tripleWasm: tripleWasm)
     }
     
