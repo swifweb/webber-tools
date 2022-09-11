@@ -11,7 +11,11 @@ public class DirectoryMonitor {
     lazy var dispatchQueue = DispatchQueue(label: "xlivepreview.directorymonitor", attributes: .concurrent)
     
     var fileDescriptor: Int32 = -1
-    var dispatchSource: DispatchSourceFileSystemObject?
+	#if os(macOS)
+	var dispatchSource: DispatchSourceFileSystemObject?
+	#endif
+	// TODO: support Linux
+    
     
     enum Mode { case dir, file }
     
@@ -144,6 +148,9 @@ public class DirectoryMonitor {
     }
     
     func stopMonitoring() {
+		#if os(macOS)
         dispatchSource?.cancel()
+		#endif
+		// TODO: support Linux
     }
 }
