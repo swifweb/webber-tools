@@ -28,7 +28,7 @@ public class Swift {
             case .build(let r, let p):
                 var args: [String] = ["build", "-c", r ? "release" : "debug", "--product", p, "--enable-test-discovery"]
                 if tripleWasm {
-                    args.append(contentsOf: ["--triple", "wasm32-unknown-wasi", "-Xlinker", "-licuuc", "-Xlinker", "-licui18n", "-Xlinker", "--stack-first", "--build-path", "./.build/.wasi"])
+                    args.append(contentsOf: ["--triple", "wasm32-unknown-wasi", "-Xswiftc", "-Xclang-linker", "-Xswiftc", "-mexec-model=reactor", "-Xlinker", "-lCoreFoundation", "-Xlinker", "-licuuc", "-Xlinker", "-licui18n", "-Xlinker", "--stack-first", "-Xlinker", "--export=main", "--build-path", "./.build/.wasi"])
                     return args
                 } else {
                     args.append(contentsOf: ["--build-path", "./.build/.native"])

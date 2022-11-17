@@ -20,6 +20,20 @@ public struct SwiftPackage: Decodable {
         public struct Resource: Decodable {
             public enum Rule: String, Decodable {
                 case process, copy
+				
+				public init(from decoder: Decoder) throws {
+					let container = try decoder.singleValueContainer()
+					if let ruleString = try? container.decode(String.self), let rule = Rule(rawValue: ruleString) {
+						self = rule
+					} else {
+						let ruleDict = try container.decode([String: [String: String]?].self)
+						if ruleDict.keys.contains("process") {
+							self = .process
+						} else {
+							self = .copy
+						}
+					}
+				}
             }
             public enum Localization: String, Decodable {
                 case `default` = "default", base
