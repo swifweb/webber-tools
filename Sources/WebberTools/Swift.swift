@@ -54,8 +54,9 @@ public class Swift {
             case .text(let text): return text
             case .raw(let raw): return raw
             case .errors(let errors):
-                if errors.count > 1 {
-                    return "found \(errors.count) errors ❗️❗️❗️"
+                let count = errors.map { $0.places.count }.reduce(0, +)
+                if count > 1 {
+                    return "found \(count) errors ❗️❗️❗️"
                 }
                 return "found 1 error ❗️"
             }
@@ -98,7 +99,7 @@ public class Swift {
         }
         env["WEBBER"] = "TRUE"
         
-		print("\(launchPath) \(command.arguments(tripleWasm: tripleWasm).joined(separator: " "))")
+//		debugPrint("\(launchPath) \(command.arguments(tripleWasm: tripleWasm).joined(separator: " "))")
 		
         process.currentDirectoryPath = workingDirectory
         process.launchPath = launchPath
