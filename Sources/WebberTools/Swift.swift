@@ -139,7 +139,7 @@ public class Swift {
             switch command {
             case .build:
                 let errors: [CompilationError] = pasreCompilationErrors(rawError)
-                guard errors.count > 0 else { throw SwiftError.text("Unable to parse errors") }
+                guard errors.count > 0 else { throw SwiftError.text("Unable to parse errors: \(rawError)") }
                 throw SwiftError.errors(errors)
             default:
                 throw SwiftError.raw(rawError)
